@@ -216,8 +216,7 @@ export default function Shop() {
                 </span>
                 <button
                   onClick={() => setSizeModal(true)}
-                  className="font-condensed text-[0.7rem] tracking-widest uppercase text-white/30 hover:text-[var(--accent)] transition-colors"
-                >
+                  className="font-condensed text-[0.7rem] tracking-widest uppercase px-3 py-1.5 border border-white/20 text-white/60 hover:border-[var(--accent)] hover:text-[var(--accent)] transition-all duration-200"                >
                   Size Guide ↗
                 </button>
               </div>
