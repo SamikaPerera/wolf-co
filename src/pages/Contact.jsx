@@ -34,7 +34,7 @@ const CHANNELS = [
       </svg>
     ),
     label: 'Email',
-    value: 'hello@wolfofficial.co',
+    value: 'wolfofficial.co@gmail.com',
     href: 'mailto:hello@wolfofficial.co',
     note: 'For business & collabs.'
   },
