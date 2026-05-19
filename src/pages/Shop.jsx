@@ -11,8 +11,8 @@ import Newsletter from '../components/Newsletter'
 // ── Product images per colour
 // Add your photos to /public/ and update these paths
 const IMAGES = {
-  BLACK: ['/black-1.jpg', '/black-2.jpg'],
-  WHITE: ['/white-1.jpg', '/white-2.jpg'],
+  BLACK: ['/black-1.jpg',],
+  WHITE: ['/white-1.jpg'],
 }
 
 export default function Shop() {

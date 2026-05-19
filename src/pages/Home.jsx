@@ -93,11 +93,10 @@ function Featured() {
           className="relative"
         >
           <div className="relative aspect-[3/4] bg-[var(--gray-dark)] border border-white/[0.06] flex items-center justify-center overflow-hidden group">
-            {/* Replace this div with <img src="/product-black.jpg" ... /> when you have photos */}
-            <div className="flex flex-col items-center gap-3 opacity-20">
-              <WolfLogo size={64} color="var(--white)" />
-              <p className="font-condensed text-[0.68rem] tracking-widest uppercase text-white/50">Add Product Photo</p>
-            </div>
+          <img
+          src="/featured-1.jpg"
+          alt="Wolf Tee"className="w-full h-full object-cover object-center"
+          />
             {/* Hover CTA */}
             <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-400"
               style={{ background: 'rgba(10,10,10,0.45)' }}>
