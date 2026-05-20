@@ -21,9 +21,9 @@ const CHANNELS = [
       </svg>
     ),
     label: 'WhatsApp',
-    value: '+94 XX XXX XXXX',
+    value: '+94 71 611 4461',
     note: 'For orders and enquiries.',
-    href: 'https://wa.me/94XXXXXXXXX',
+    href: 'https://wa.me/94716114461',
     cta: 'Open WhatsApp',
   },
   {
@@ -34,9 +34,9 @@ const CHANNELS = [
       </svg>
     ),
     label: 'Email',
-    value: 'hello@wolfofficial.co',
+    value: 'wolfofficial.co@gmail.com',
     note: 'For business and collabs.',
-    href: 'mailto:hello@wolfofficial.co',
+    href: 'mailto:wolfofficial.co@gmail.com',
     cta: 'Send Email',
   },
 ]

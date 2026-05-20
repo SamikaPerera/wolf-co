@@ -2,7 +2,8 @@ import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useCart } from '../context/CartContext'
 import WolfLogo from './WolfLogo'
-
+import emailjs from '@emailjs/browser'
+import { EMAILJS } from '../config/emailjs'
 const fmt = (n) => `Rs. ${n.toLocaleString()}`
 
 // Maps colour to product image
@@ -108,9 +109,29 @@ function CheckoutForm({ onSuccess }) {
   const submit = async (e) => {
     e.preventDefault()
     setLoading(true)
-    await new Promise(r => setTimeout(r, 600)) // small delay for UX
-    onSuccess(form)
-    setLoading(false)
+    try {
+      await emailjs.send(
+        EMAILJS.serviceId,
+        EMAILJS.templates.order,
+        {
+          name:    form.name,
+          email:   form.email,
+          phone:   form.phone,
+          address: form.address,
+          city:    form.city,
+          note:    form.note || 'None',
+          items:   items.map(i => `${i.color} / ${i.size} x${i.qty}`).join(', '),
+          total:   `Rs. ${total.toLocaleString()}`,
+        },
+        EMAILJS.publicKey
+      )
+      onSuccess(form)
+    } catch (err) {
+      console.error('Order email error:', err)
+      onSuccess(form) // still proceed even if email fails
+    } finally {
+      setLoading(false)
+    }
   }
 
   const orderSummary = items.map(i => `${i.color} / ${i.size} x${i.qty}`).join(', ')
@@ -120,7 +141,6 @@ function CheckoutForm({ onSuccess }) {
       <p className="font-condensed text-[0.7rem] tracking-[0.22em] uppercase text-white/30 mb-5">
         Order Details
       </p>
-
       <form onSubmit={submit} className="space-y-3">
         {[
           { name: 'name',    placeholder: 'Full Name',        type: 'text'  },
@@ -130,29 +150,21 @@ function CheckoutForm({ onSuccess }) {
           { name: 'city',    placeholder: 'City',             type: 'text'  },
         ].map(f => (
           <input
-            key={f.name}
-            name={f.name}
-            type={f.type}
-            required
-            placeholder={f.placeholder.toUpperCase()}
-            value={form[f.name]}
-            onChange={handle}
+            key={f.name} name={f.name} type={f.type}
+            required placeholder={f.placeholder.toUpperCase()}
+            value={form[f.name]} onChange={handle}
             className="input-base"
           />
         ))}
-
         <textarea
-          name="note"
-          rows={2}
-          placeholder="ORDER NOTES (OPTIONAL)"
-          value={form.note}
-          onChange={handle}
+          name="note" rows={2} placeholder="ORDER NOTES (OPTIONAL)"
+          value={form.note} onChange={handle}
           className="input-base resize-none"
         />
 
         {/* Order summary */}
-        <div className="p-3 border border-white/[0.06] bg-white/[0.02] space-y-1.5">
-          <p className="font-condensed text-[0.65rem] tracking-widest uppercase text-white/25">
+        <div className="p-3 border border-white/[0.06] bg-white/[0.02]">
+          <p className="font-condensed text-[0.65rem] tracking-widest uppercase text-white/25 mb-1">
             Order Summary
           </p>
           <p className="font-condensed text-[0.72rem] text-white/50 tracking-wide">
@@ -166,25 +178,19 @@ function CheckoutForm({ onSuccess }) {
             Payment
           </p>
           <p className="font-condensed text-[0.72rem] text-white/45 leading-relaxed tracking-wide">
-            We'll contact you via Instagram or WhatsApp to confirm and process payment via bank transfer, PayHere, or cash on delivery.
+            We'll contact you via Instagram or WhatsApp to confirm and process payment.
           </p>
         </div>
 
         {/* Total */}
         <div className="flex justify-between items-center py-3 border-t border-white/[0.08]">
-          <span className="font-condensed text-[0.7rem] tracking-widest uppercase text-white/35">
-            Total
-          </span>
+          <span className="font-condensed text-[0.7rem] tracking-widest uppercase text-white/35">Total</span>
           <span className="font-bebas text-2xl tracking-wider" style={{ color: 'var(--accent)' }}>
-            {fmt(total)}
+            Rs. {total.toLocaleString()}
           </span>
         </div>
 
-        <button
-          type="submit"
-          disabled={loading}
-          className="btn-primary w-full disabled:opacity-60"
-        >
+        <button type="submit" disabled={loading} className="btn-primary w-full disabled:opacity-60">
           <span>{loading ? 'Placing Order...' : 'Place Order →'}</span>
         </button>
       </form>
